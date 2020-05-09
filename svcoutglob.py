@@ -35,7 +35,7 @@ def svc_out_glob(infile):
    file = open(infile,'+r')
    svc_info_glob={}
    svc_info_glob.update({'lsnode':out_dot_parser(file,'svcinfo lsnode')})
-   svc_info_glob.update({'lsnode_delim':out_dot_parser(file,'svcinfo lsnode -delim : ')})
+   svc_info_glob.update({'lsnode_delim':out_line_parser(file,'svcinfo lsnode -delim : ')})
    svc_info_glob.update({'lsvdisk': out_dot_parser(file, 'svcinfo lsvdisk')})
    svc_info_glob.update({'lshost': out_dot_parser(file, 'svcinfo lshost')})
    svc_info_glob.update({'lshost_delim': out_line_parser(file, 'svcinfo lshost -delim : ')})
