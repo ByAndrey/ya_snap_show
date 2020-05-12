@@ -1,3 +1,25 @@
+def lsnode_parser(file):
+   file.seek(0)
+   for ln in file:
+      if ln.startswith("svcinfo lsnode"):
+         data=next(file)
+         header = data.rstrip().split(':')
+         data=next(file)
+         block = []
+         while data!='\n':
+            split_data = data.rstrip().split(':')
+            values = {}
+            for i in range(0,len(header)):
+               if i<10:
+                 values.update({header[i]:split_data[i]}) 
+               if i == 10:
+                  values.update({header[i]:split_data[i]+":"+split_data[i+1]})
+               else:
+                 values.update({header[i]:split_data[i+1]})
+            block.append(values)
+            data=next(file)
+         return block
+
 def out_dot_parser(file,cmd):
    file.seek(0)
    for ln in file:
@@ -34,7 +56,7 @@ def out_line_parser(file,cmd):
 def svc_out_glob(infile):
    file = open(infile,'+r')
    svc_info_glob={}
-   svc_info_glob.update({'lsnode':out_dot_parser(file,'svcinfo lsnode')})
+   svc_info_glob.update({'lsnode':lsnode_parser(file)})
    svc_info_glob.update({'lsnode_delim':out_line_parser(file,'svcinfo lsnode -delim : ')})
    svc_info_glob.update({'lsvdisk': out_dot_parser(file, 'svcinfo lsvdisk')})
    svc_info_glob.update({'lshost': out_dot_parser(file, 'svcinfo lshost')})

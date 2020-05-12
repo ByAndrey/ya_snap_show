@@ -10,7 +10,7 @@ for dir in dirs:
     for file in files:
        if file.startswith('svcout.7'):
           svc_info_glob = svc_out_glob("%s/dumps/%s"%(dir,file))
-          print(svc_info_glob['lsnode'][0]['site_id'])
+          print(svc_info_glob['lsnode'][0]['enclosure_serial_number'])
           for lsnode in svc_info_glob['lsnode_delim']:
              print(lsnode['code_level'])
     print('------')
