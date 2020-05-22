@@ -43,4 +43,4 @@ for dir in dirs:
     pdf_data_pac.update({'mdiskgrp_list':svc_info_glob['lsmdiskgrp_delim']})
     pdf_data_pac.update({'vdisk_list':svc_info_glob['lsvdisk_delim']})
    # Create pdf file
-    report_pdf("report%s.pdf"%dir,pdf_data_pac)
+    report_pdf("../reports/report%s.pdf"%dir,pdf_data_pac)
