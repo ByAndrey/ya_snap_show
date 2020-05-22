@@ -60,7 +60,7 @@ def out_line_parser(file,cmd):
                   if (len(split_data) > 1 and i < len(split_data)-1):
                      value += ' '
             else:
-               value='else'
+               value=''
             if name in values:
                name = key_checker(name,values)
                values.update({name: value})
@@ -78,5 +78,6 @@ def sa_out(infile):
    sa_data.update({'lsservicenodes': out_blk_space_parser(file, 'sainfo lsservicenodes')})
    sa_data.update({'lsservicerecommendation': out_serv_recom_parser(file)})
    sa_data.update({'lshardware': out_line_parser(file, 'sainfo lshardware')})
+   sa_data.update({'lscanister': out_line_parser(file, 'sainfo lscanister')})
    file.close()
    return sa_data
