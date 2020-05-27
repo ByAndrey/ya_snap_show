@@ -3,10 +3,14 @@ from fpdf import FPDF, HTMLMixin
 class MyFPDF(FPDF, HTMLMixin):
     pass
 
-def pdf_html_htable(title,keys,keys_width,values,values_width):
+def li(title):
+    html = ''
+    html += "<li><font face='DejaVuSans'>%s :</font></li>"%(title)
+    return (html)
+
+def pdf_html_htable(keys,keys_width,values,values_width):
     html = ''
     html_track=[]
-    html += "<li><font face='DejaVuSans'>%s :</font></li>"%(title)
     html += "<table border=1>"
     header=True
     for key in keys:
@@ -28,9 +32,8 @@ def pdf_html_htable(title,keys,keys_width,values,values_width):
     html += "</table>"
     return(html)
 
-def pdf_html_vtable(title,keys,col_width,values):
+def pdf_html_vtable(keys,col_width,values):
     html = ''
-    html += "<li><font face='DejaVuSans'>%s :</font></li>"%(title)
     html += "<table border=1><tr>"
     i=0
     for key in keys:
@@ -73,41 +76,52 @@ def report_pdf(filename,pdf_data_pac):
     values=[]
     for enclosure in pdf_data_pac['enclosure_list']:
         values.append([enclosure['serial_number'],enclosure['id'],"%s/%s"%(enclosure['online_canisters'],enclosure['total_canisters']),"%s/%s"%(enclosure['online_PSUs'],enclosure['total_PSUs']),enclosure['status'][0:-4]])
-    html += pdf_html_vtable('Enclosures', keys, col_width, values)
+    html += li('Enclosures')
+    html += pdf_html_vtable(keys, col_width, values)
 
 # Node list
     keys = ['panel_name','node_id','config','status']
+    col_width = [250,90,90,90]
     values=[]
     for node in pdf_data_pac['node_list']:
         values.append([node['panel_name'],node['id'],node['config_node'],node['status'][0:-4]])
-    html += pdf_html_htable('Nodes', keys, 250, values, 180)
+    html += li('Nodes')
+    html += pdf_html_vtable(keys, col_width, values)
 
 # Disks status table
     #pdf.cell(0,6, txt="Диски : ", ln=1, align="L")
+    html += li('Drives')
     keys = ['slot_id','disk_id','status']
-    values=[]
-    for drive in pdf_data_pac['drive_list']:
-        values.append([drive['slotid'],drive['id'],drive['status'][0:-4]])
-    html += pdf_html_htable('Drives', keys, 90, values, 40)
+    for enclosure in pdf_data_pac['enclosure_list']:
+        values=[]
+        html += '%s / %s'%(enclosure['serial_number'],enclosure['id'])
+        for drive in pdf_data_pac['drive_list']:
+            if (drive['enclosure_id'] == enclosure['id']):
+                values.append([drive['slot_id'],drive['id'],drive['status'][0:-4]])
+        html += pdf_html_htable(keys, 90, values, 40)
+
 # Mdiskgrp list
     keys = ['name','id','vdisks','status']
     col_width = [340,90,90,90]
     values=[]
     for mdiskgrp in pdf_data_pac['mdiskgrp_list']:
         values.append([mdiskgrp['name'],mdiskgrp['id'],mdiskgrp['vdisk_count'],mdiskgrp['status'][0:-4]])
-    html += pdf_html_vtable('mdisk_grp', keys, col_width, values)
+    html += li('mdisk_grp')
+    html += pdf_html_vtable(keys, col_width, values)
+
 # Mdisk list
     keys = ['name','id','raid','status']
     col_width = [340,90,90,90]
     values=[]
     for mdisk in pdf_data_pac['mdisk_list']:
         values.append([mdisk['name'],mdisk['id'],mdisk['raid_level'],mdisk['status'][0:-4]])
-    html += pdf_html_vtable('mdisk', keys, col_width, values)
+    html += li('mdisk')
+    html += pdf_html_vtable(keys, col_width, values)
 
     html += "</ul>"
     pdf.write_html(html)
     html='<ul>'
-    pdf.add_page()
+#    pdf.add_page()
 
 # Vdisk list
     keys = ['name','id','md_grp','pf_node','status']
@@ -119,7 +133,8 @@ def report_pdf(filename,pdf_data_pac):
         else:
             name=vdisk['name']
         values.append([name,vdisk['id'],vdisk['mdisk_grp_id'],vdisk['preferred_node_id'],vdisk['status'][0:-4]])
-    html += pdf_html_vtable('vdisk', keys, col_width, values)
+    html += li('vdisk')
+    html += pdf_html_vtable(keys, col_width, values)
 #
     html += "</ul>"
 
