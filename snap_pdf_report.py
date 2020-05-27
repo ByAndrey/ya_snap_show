@@ -10,6 +10,7 @@ from pdfcreater import report_pdf
 os.chdir('logs')
 dirs = filter(os.path.isdir, os.listdir())
 print('------')
+global_snap_collector = {}
 for dir in dirs:
     files = os.listdir("%s/dumps"%dir)
     pdf_data_pac = {}
@@ -22,14 +23,15 @@ for dir in dirs:
           svc_info_int = svc_out_int("%s/dumps/%s"%(dir,file))
           drive_list = []
           #Sorted drive_list (sort by slot_id)
-          for lsdrive in svc_info_int['lsdrive']:
-            drive_list.append({"id" : lsdrive['id'], "slotid" : lsdrive['slot_id'] , "status" : lsdrive['status']})
-          sorted_drive_list = sorted(drive_list, key = lambda i: int(i['slotid']))
+          #for lsdrive in svc_info_int['lsdrive']:
+          #  drive_list.append({"id" : lsdrive['id'], "slotid" : lsdrive['slot_id'], "status" : lsdrive['status']})
+          sorted_drive_list = sorted(svc_info_int['lsdrive'], key = lambda i: int(i['slot_id']))
 
        if file.startswith('svcout.7'):
           svc_info_glob = svc_out_glob("%s/dumps/%s"%(dir,file))
 
     print('Create pdf for %s - %s - %s'%(saout_data['lsservicestatus'][0]['product_mtm'],saout_data['lsservicestatus'][0]['product_serial'],datetime.datetime.strptime(dir[-13:-7], "%y%m%d").date()))
+
     #format data block
     pdf_data_pac.update({'product_name':saout_data['lsservicestatus'][0]['product_name']})
     pdf_data_pac.update({'product_mtm':saout_data['lsservicestatus'][0]['product_mtm']})
@@ -42,5 +44,8 @@ for dir in dirs:
     pdf_data_pac.update({'mdisk_list':svc_info_glob['lsmdisk_delim']})
     pdf_data_pac.update({'mdiskgrp_list':svc_info_glob['lsmdiskgrp_delim']})
     pdf_data_pac.update({'vdisk_list':svc_info_glob['lsvdisk_delim']})
-   # Create pdf file
+
+    # Create pdf file
     report_pdf("../reports/report%s.pdf"%dir,pdf_data_pac)
+
+print('--------')
