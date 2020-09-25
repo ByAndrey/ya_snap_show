@@ -1,0 +1,204 @@
+{% extends "snap_show_unit_main.html" %}
+{% set type = "config" %}
+
+{% block info %}
+<div class="container-fluid">
+    <div class="row">
+
+        <h4>Mdisk group:</h4>
+        {% for mdiskgrp in data['svcout_glob']['lsmdiskgrp'] %}
+        <div class="container-fluid">
+            <div class="row" style="background-color: darkgoldenrod;">
+                <div class="col-md-1 text-center">
+                    Id
+                </div>
+                <div class="col-md-2 text-center">
+                    Name
+                </div>
+                <div class="col-md text-center">
+                    Status
+                </div>
+                <div class="col-md text-center">
+                    mdisk_count
+                </div>
+                <div class="col-md text-center">
+                    vdisk_count
+                </div>
+                <div class="col-md text-center">
+                    capacity
+                </div>
+                <div class="col-md text-center">
+                    free_capacity
+                </div>
+            </div>
+
+            <div class="row" style="background-color: rgb(175, 160, 123);">
+                <div class="col-md-1 text-center">
+                    {{ mdiskgrp['id'] }}
+                </div>
+                <div class="col-md-2 text-center">
+                    {{ mdiskgrp['name'] }}
+                </div>
+                <div class="col-md text-center {% if mdiskgrp['status']=='offline' %}bg-danger{% endif %}">
+                    {{ mdiskgrp['status'] }}
+                </div>
+                <div class="col-md text-center">
+                    {{ mdiskgrp['mdisk_count']}}
+                </div>
+                <div class="col-md text-center">
+                    {{ mdiskgrp['vdisk_count']}}
+                </div>
+                <div class="col-md text-center">
+                    {{ mdiskgrp['capacity']}}
+                </div>
+                <div class="col-md text-center">
+                    {{ mdiskgrp['free_capacity']}}
+                </div>
+            </div>
+        <div class="container-fluid">
+            <div class="row">
+            <div class="col-md">Mdisk :</div>
+            </div>
+            <div class="row" style="background-color: rgb(154, 181, 231);">
+                <div class="col-md-1 text-center">
+                    Id
+                </div>
+                <div class="col-md-2 text-center">
+                    Name
+                </div>
+                <div class="col-md text-center">
+                    Status
+                </div>
+                <div class="col-md text-center">
+                    Raid_level
+                </div>
+                <div class="col-md text-center">
+                   Distributed
+                </div>
+                <div class="col-md text-center">
+                    Drive_count
+                </div>
+            </div>
+        {% for mdisk in data['svcout_int']['lsarray_delim'] %}
+            {% if (mdisk['mdisk_grp_id']==mdiskgrp['id']) %}
+            <div class="row" style="background-color: rgb(172, 191, 228);">
+                <div class="col-md-1 text-center">
+                    {{ mdisk['mdisk_id'] }}
+                </div>
+                <div class="col-md-2 text-center">
+                    {{ mdisk['mdisk_name'] }}
+                </div>
+                <div class="col-md text-center {% if mdisk['status']=='offline' %}bg-danger{% endif %}"">
+                    {{ mdisk['status'] }}
+                </div>
+                <div class="col-md text-center">
+                    {{ mdisk['raid_level']}}
+                </div>
+                <div class="col-md text-center">
+                    {{ mdisk['distributed']}}
+                </div>
+                <div class="col-md text-center">
+                    {{ mdisk['drive_count']}}
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+            <div class="col-md">Vdisk :</div>
+            </div>
+            <div class="row" style="background-color: rgb(141, 228, 180);">
+                <div class="col-md-1 text-center">
+                    Id
+                </div>
+                <div class="col-md-2 text-center">
+                    Name
+                </div>
+                <div class="col-md-1 text-center">
+                    Status
+                </div>
+                <div class="col-md-1 text-center">
+                    capacity
+                </div>
+                <div class="col-md text-center">
+                    vdisk_UID
+                </div>
+                <div class="col-md-1 text-center">
+                    format
+                </div>
+            </div>
+        {% for vdisk in data['svcout_glob']['lsvdisk'] %}
+            {% if (vdisk['mdisk_grp_id']==mdiskgrp['id']) %}
+            <div class="row" style="background-color: rgb(172, 228, 197);">
+                <div class="col-md-1 text-center">
+                    {{ vdisk['id'] }}
+                </div>
+                <div class="col-md-2 text-center">
+                    {{ vdisk['name'] }}
+                </div>
+                <div class="col-md-1 text-center {% if vdisk['status']=='offline' %}bg-danger{% endif %}"">
+                    {{ vdisk['status'] }}
+                </div>
+                <div class="col-md-1 text-center">
+                    {{ vdisk['capacity']}}
+                </div>
+                <div class="col-md text-center">
+                    {{ vdisk['vdisk_UID']}}
+                </div>
+                <div class="col-md-1 text-center">
+                    {{ vdisk['formatting']}}
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+        {% endfor %}
+
+        <div class="container-fluid">
+                {% for enclosure in data['svcout_int']['lsenclosure_delim'] %}
+                Enclosure #{{ enclosure['id'] }}
+                <table border=1><tr>
+                    {% for slot in data['svcout_int']['lsenclosureslot_delim'] %}
+                        {% if slot['enclosure_id'] == enclosure['id'] %}
+                            <td bgcolor="#DDDDDD" align='center' width='30'>{{slot['slot_id']}}</td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                    <tr>
+                    {% for slot in data['svcout_int']['lsenclosureslot_delim'] %}
+                        {% if slot['enclosure_id'] == enclosure['id'] %}
+                            <td width='30' align="center">
+                            {% set check = namespace(found=false) %}
+                            {% for drive in data['svcout_int']['lsdrive_delim'] %}
+                                {% if (drive['enclosure_id']==enclosure['id']) and (drive['slot_id']==slot['slot_id']) %}
+                                    {% if drive['use']=='spare'%}S{% else %}
+                                    {% if drive['status'] == 'offline' %}<font color='red'><b>{% endif %}
+                                    {{ drive['mdisk_id'] }}
+                                    {% if drive['status'] == 'offline' %}</b></font>{% endif %}
+                                    {% endif %}
+                                {% set check.found = true %}
+                                {% endif%}
+                            {% endfor %}
+                            {% if not check.found %} -- {% endif %}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                </table>
+                {% endfor %}
+            </div>
+        <h4>Hosts:</h4>
+        <div class="container-fluid">
+            {% for host in data['svcout_glob']['lshost_delim'] %}
+            <div class='row'>
+                <div class="col-md-4">{{ host['name'] }}</div><div class="col-md-1"><font color='{% if host['status']=="online" %}green{% else %}red{% endif %}'>{{ host['status']}}</font></div><div class="col-md-1">{{ host['protocol'] }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    
+    </div>
+</div>
+{% endblock %}

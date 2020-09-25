@@ -1,0 +1,65 @@
+{% extends "snap_show_unit_main.html" %}
+{% set type = "hardware" %}
+
+{% block info %}
+
+    {% for enclosure in data['svcout_int']['lsenclosure_delim'] %}
+        <div class="bd-lead">
+            <div class="row">
+            <div class="col-md-1">id : {{ enclosure['id']}}</div>
+            <div class="col-md-3">Enc_type : {{ enclosure['product_MTM'] }}({{ enclosure['type'] }})<br> Sn : {{ enclosure['serial_number'] }}</div>
+            <div class="col-md-2">Status : {{ enclosure['status'] }}</div>
+            <div class="col-md-2">Temperature : {{ enclosure['ambient_temperature'] }}</div> 
+            </div>
+            <div class="container-fluid">
+                <table border=1><tr>
+                {% for slot in data['svcout_int']['lsenclosureslot_delim'] %}
+                    {% if slot['enclosure_id'] == enclosure['id'] %}
+                        <td bgcolor="#DDDDDD" align='center' width='30'>{{slot['slot_id']}}</td>
+                    {% endif %}
+                {% endfor %}
+                </tr>
+                <tr>
+                {% for slot in data['svcout_int']['lsenclosureslot_delim'] %}
+                    {% if slot['enclosure_id'] == enclosure['id'] %}
+                        <td width='30' align='center' bgcolor="{% if slot['powered']=='no' %}grey{% elif slot['fault_LED'] == 'off' %}green{% else %}red{% endif %}"><a href="drive_info?id={{ data['_id'] }}&drive_id={{ slot['drive_id'] }}" target="popup" style="color: midnightblue;" onclick="window.open('../drive_info?id={{ data['_id'] }}&drive_id={{ slot['drive_id'] }}','name','width=600,height=400')">{{ slot['drive_id'] }}</a></td>
+                    {% endif %}
+                {% endfor %}
+                </tr></table>
+            </div>
+            <div class="row">
+                <div class='col-md-2 text-center'>
+                    Nodes : {{ enclosure['online_canisters'] }}/{{ enclosure['total_canisters'] }}
+                </div>
+                <div class="col-md-3 text-center">
+                    PSUs : {{ enclosure['online_PSUs'] }}/{{ enclosure['total_PSUs'] }}
+                </div>
+                <div class="col-md-2 text-center">
+                            {% set battery_online = namespace(value=0) %}
+                            {% set battery_total = namespace(value=0) %}
+                            {% for battery in data['svcout_int']['lsenclosurebattery_delim'] %}
+                            {% if battery['enclosure_id'] == enclosure['id'] %}
+                                {% set battery_total.value = battery_total.value + 1 %}
+                                {% if battery['status'] == "online" %}{% set battery_online.value = battery_online.value + 1 %}{% endif %}
+                            {% endif %}
+                            {% endfor %}
+                    Battery : {{ battery_online.value }}/{{ battery_total.value }}
+                </div>
+            </div>
+            <div class="container-fluid">
+                    Drive types :<br>
+                    <div class="container-fluid">
+                    {% set drive_fru=[] %}
+                    {% for drive in data['svcout_int']['lsdrive_delim'] %}
+                    {% if (drive['enclosure_id'] == enclosure['id'] and drive['FRU_part_number'] not in drive_fru) %}
+                        <div class="row">
+                        <div class="col-md-1">{{ drive['FRU_part_number'] }}</div><div class="col-md-1">{{ drive['physical_capacity'] }}</div><div class="col-md-1"> {{ drive['transport_protocol']}}</div>
+                        {% set _= drive_fru.append(drive['FRU_part_number']) %}
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                    </div>
+            </div>
+        </div><br>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "snap_show_unit_main.html" %}
+{% set type = "events" %}
+
+{% block info %}
+<div class="container-fluid">
+    <nav class="sticky-top">
+    <div class="row" style="background: #f8f9fa">
+        <div class="col-md-1 text-center">
+            <h6>Event_id</h6>
+        </div>
+        <div class="col-md-2 text-center">
+            <h6>Timestamp</h6>
+        </div>
+        <div class="col-md-1 text-center">
+            <h6>Status</h6>
+        </div>
+        <div class="col-md-2 text-center">
+            <h6>Object</h6>
+        </div>
+        <div class="col-md-1 text-center">
+            <h6>Fixed</h6>
+        </div>
+        <div class="col-md-5 text-center">
+            <h6>Description</h6>
+        </div>
+    </div>
+    </nav>
+
+    {% for event in data['svcout_glob']['lseventlog']|reverse %}
+        {% if event['fixed']=='no' %}
+        <div class="row" style="color:{% if event['status']=='alert' %} red {% elif event['status']=='config' %} blue {% elif event['status']=='expired' %} grey {% else %} black  {% endif %};" >
+            <div class="col-md-1 text-center">
+                {{ event['event_id'] }}
+            </div>
+            <div class="col-md-2 text-center">
+                {{ event['last_timestamp'] }}
+            </div>
+            <div class="col-md-1 text-center">
+                {{ event['status'] }}
+            </div>
+            <div class="col-md-2 text-center">
+                {{ event['object_type'] }} {{ event['object_id']}}
+            </div>
+            <div class="col-md-1 text-center">
+                {{ event['fixed'] }}
+            </div>
+            <div class="col-md-5 text-left">
+                {{ event['error_code']}} {{ event['description'] }}
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+
+
+{% endblock%}

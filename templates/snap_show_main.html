@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="POST" id='ip_list_form'>
+    <div class="container-fluid col-md-4 col-md-push-4">
+    <table class='table table-striped text-center'>
+    <tr>
+        <th class='col-1'>mtm</th>
+        <th class='col-1'>sn</th>
+        <th class='col-1'>codelevel</th>
+        <th class='col-1'>timestamp</th>
+
+    </tr>
+    {% for element in data %}
+    <tr style="cursor: pointer;" onclick="location.href='unit?id={{ element[0] }}'">
+        <td class='col-1' nowrap>{{ element[1] }}</td>
+        <td class='col-1' nowrap>{{ element[2] }}</td>
+        <td class='col-1' nowrap>{{ element[4] }}</td>
+        <td class='col-1' nowrap>{{ element[3] }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    </center>
+    </div>
+    </form>
+{% endblock %}

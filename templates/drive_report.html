@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drive_Report</title>
+    <link rel="stylesheet" href="static/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col text-right">
+                 Drive id:
+            </div>
+            <div class="col">
+                {{ drive['drive_id'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Drive status :
+            </div>
+            <div class="col">
+                {{ drive['drive_status'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Drive vendor :
+            </div>
+            <div class="col">
+                {{ drive['drive_vendorid'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Drive product id :
+            </div>
+            <div class="col">
+                {{ drive['drive_prodid'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Drive capacity :
+            </div>
+            <div class="col">
+                {{ drive['drive_capacity'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Drive type :
+            </div>
+            <div class="col">
+                {{ drive['drive_type'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Drive FRU # :
+            </div>
+            <div class="col">
+                {{ drive['drive_fru'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Enclosure Slot :
+            </div>
+            <div class="col">
+                {{ drive['slot_id'] }}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col text-right">
+                Enclosure id :
+            </div>
+            <div class="col">
+                {{ drive['enc_id'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Enclosure mtm:
+            </div>
+            <div class="col">
+                {{ drive['enc_mtm'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Enclosure SN:
+            </div>
+            <div class="col">
+                {{ drive['enc_sn'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Enclosure type:
+            </div>
+            <div class="col">
+                {{ drive['enc_type'] }}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col text-right">
+                Mdisk id:
+            </div>
+            <div class="col">
+                {{ drive['mdisk_id'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Mdisk name:
+            </div>
+            <div class="col">
+                {{ drive['mdisk_name'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Mdisk RAID level:
+            </div>
+            <div class="col">
+                {% if (drive['mdisk_distributed']=='yes') %}D{% endif %}{{ drive['mdisk_raidtype'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Mdisk drive count:
+            </div>
+            <div class="col">
+                {{ drive['mdisk_drivecount'] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right">
+                Mdisk status:
+            </div>
+            <div class="col">
+                {{ drive['mdisk_status'] }}
+            </div>
+        </div>
+
+
+    </div>
+    <script src="static/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="static/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="static/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

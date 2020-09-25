@@ -1,0 +1,109 @@
+{% extends "snap_show_unit_main.html" %}
+{% set type = "firmware" %}
+
+{% block info %}
+<div class="container-fluid">
+
+<br>
+
+<div class="row">
+    <div class="col-md-4">
+    <h5>System code level :</h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+    <h6>Current code level : </h6>
+    </div>
+    <div class="col-md-4">
+    {{ data['svcout_glob']['lssystem'][0]['code_level'] }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+    <h6>Recommended code level : </h6>
+    </div>
+    <div class="col-md-4">
+    
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-4">
+        <h5>Nodes code level :</h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2 text-center">
+        <h6>node_name</h6>
+    </div>
+    <div class="col-md-4 text-center">
+        <h6>code_level</h6>
+    </div>
+    <div class="col-md-4 text-center">
+        <h6>recommended_level</h6>
+    </div>
+</div>
+
+{% for node in data['svcout_glob']['lsnode_delim'] %}
+<div class="row">
+    <div class="col-md-2 text-center">
+        {{ node['name'] }}
+    </div>
+    <div class="col-md-4 text-center">
+        {{ node['code_level'] }}
+    </div>
+</div>
+{% endfor %}
+
+<hr>
+
+<div class="row">
+    <div class="col-md-4">
+        <h5>Disks firmware :</h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-1 text-center">
+       <h6>id</h6>
+    </div>
+    <div class="col-md-2 text-center">
+        <h6>vendor_id</h6>
+    </div>
+    <div class="col-md-2 text-center">
+        <h6>product_id</h6>
+    </div>
+    <div class="col-md-2 text-center">
+        <h6>firmware_level</h6>
+    </div>
+    <div class="col-md-2 text-center">
+        <h6>recommended_level</h6>
+    </div>
+</div>
+
+{% for disk in data['svcout_int']['lsdrive_delim'] %}
+<div class="row">
+    <div class="col-md-1 text-center">
+        {{ disk['id'] }}
+    </div>
+    <div class="col-md-2 text-center">
+        {{ disk['vendor_id'] }}
+    </div>
+    <div class="col-md-2 text-center">
+        {{ disk['product_id'] }}
+    </div>
+    <div class="col-md-2 text-center">
+        {{ disk['firmware_level'] }}
+    </div>
+</div>
+{% endfor %}
+
+<hr>
+
+</div>
+{% endblock %}

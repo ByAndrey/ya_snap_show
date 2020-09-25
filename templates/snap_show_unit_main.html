@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+.bd-sidebar {
+  order: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-right: 1px solid rgba(0, 0, 0, .1);
+}
+</style>
+
+<div class="container-fluid">
+    <div class="row flex-xl-nowrap">
+        <div class="col-md-3 bd-sidebar">
+            <nav class="sticky-top">
+            <table>
+                <tr>
+                    <td align='right'>Product_name :</td>
+                    <td>&nbsp;{{ data['saout']['lsservicestatus'][0]['product_name'] }}</td>
+                </tr>
+                <tr>
+                    <td align='right'>Type :</td>
+                    <td>&nbsp;{{ data['mtm'] }}</td>
+                </tr>
+                <tr>
+                    <td align='right'>Serial number :</td>
+                    <td>&nbsp;{{ data['sn'] }}</td>
+                </tr>
+                <tr>
+                    <td align='right'>Code level :</td>
+                    <td>&nbsp;{{ data['svcout_glob']['lssystem'][0]['code_level'][0:8] }}</td>
+                </tr>
+                <tr>
+                    <td align='right'>Timestamp :</td>
+                    <td>&nbsp;{{ data['timestamp'] }}</td>
+                </tr>
+            </table>
+            </nav>
+        </div>
+
+        <div class="col-md-9">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link {{ 'active' if type == 'hardware' else '' }}" href="unit?id={{ data['_id'] }}&type=hardware">Hardware</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {{ 'active' if type == 'config' else '' }}" href="unit?id={{ data['_id'] }}&type=config">Configuration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ 'active' if type == 'events' else '' }}" href="unit?id={{ data['_id'] }}&type=events">Events</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link {{ 'active' if type == 'firmware' else '' }}" href="unit?id={{ data['_id'] }}&type=firmware">Firmware</a>
+                </li>
+            </ul>
+              {% block info %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
