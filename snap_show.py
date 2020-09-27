@@ -46,15 +46,7 @@ def drive_info(system_id,drive_id):
    return(drive_info)
 
 def systems_list():
-   #distinct_sn = db.test.distinct("sn")
    data = []
-   #print (distinct_sn)
-   #for sn in distinct_sn:
-   #   x = db.test.find({"timestamp":"%s"%sn})
-   #   for item in x:
-   #      print("%s - %s - %s"%(item['mtm'],item['sn'],item['timestamp']))
-   #      data.append([item['_id'],item['mtm'],item['sn'],item['timestamp'],item['saout']['lsservicestatus'][0]['node_code_version']])
-   #print(data)
    x = db.test.find().sort('timestamp',-1).limit(12)
    for item in x:
       print("%s - %s - %s"%(item['mtm'],item['sn'],item['timestamp']))
@@ -63,13 +55,6 @@ def systems_list():
 
 def get_unit_data(id):
    item = db.test.find({"_id":ObjectId(id)})
-   #for item in req_unit_data:
-   #print("SAOUT :")
-   #print(item[0]['saout']) 
-   #print("-------")
-   #print("SVCOUT_INT :")
-   #print(item[0]['svcout_int']['lsdrive'][1])
-   #print("------------")
    return (item[0])
 
 
