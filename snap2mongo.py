@@ -9,7 +9,7 @@ from svcoutint import svc_out_int
 from saout import sa_out
 from pymongo import MongoClient
 
-os.chdir('/root/ya_snap_show/logs')
+os.chdir(os.environ['SNAP_DIR'])
 dirs = filter(os.path.isdir, os.listdir())
 print('------')
 global_snap_collector = {}

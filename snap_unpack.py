@@ -5,7 +5,7 @@ import tarfile
 
 #print (os.listdir('logs'))
 
-os.chdir('/root/ya_snap_show/logs')
+os.chdir(os.environ['SNAP_DIR'])
 
 dir_content = os.listdir()
 

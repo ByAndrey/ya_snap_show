@@ -7,7 +7,7 @@ import operator
 import os
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "logs"
+app.config['UPLOAD_FOLDER'] = os.environ['SNAP_DIR']
 
 client = MongoClient()
 db = client.test
