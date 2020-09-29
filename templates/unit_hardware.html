@@ -22,7 +22,7 @@
                 <tr>
                 {% for slot in data['svcout_int']['lsenclosureslot_delim'] %}
                     {% if slot['enclosure_id'] == enclosure['id'] %}
-                        <td width='30' align='center' bgcolor="{% if slot['powered']=='no' %}grey{% elif slot['fault_LED'] == 'off' %}green{% else %}red{% endif %}"><a href="drive_info?id={{ data['_id'] }}&drive_id={{ slot['drive_id'] }}" target="popup" style="color: midnightblue;" onclick="window.open('../drive_info?id={{ data['_id'] }}&drive_id={{ slot['drive_id'] }}','name','width=600,height=400')">{{ slot['drive_id'] }}</a></td>
+                        <td width='30' align='center' bgcolor="{% if slot['powered']=='no' %}grey{% elif slot['fault_LED'] == 'off' %}green{% else %}red{% endif %}"><a href="drive_info?id={{ data['_id'] }}&drive_id={{ slot['drive_id'] }}" target="popup" style="color: midnightblue;">{{ slot['drive_id'] }}</a></td>
                     {% endif %}
                 {% endfor %}
                 </tr></table>
