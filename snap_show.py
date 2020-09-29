@@ -82,6 +82,8 @@ def unit_page():
          return render_template("unit_firmware.html", data = get_unit_data(request.args.get('id')))
       elif (request.args.get('type')=='events'):
          return render_template("unit_events.html", data = get_unit_data(request.args.get('id')))
+      elif (request.args.get('type')=='audit'):
+         return render_template("unit_audit.html", data = get_unit_data(request.args.get('id')))
       else:
          return render_template("unit_hardware.html", data = get_unit_data(request.args.get('id')), sorted_drive_list = sorted_drive_list)
    else:

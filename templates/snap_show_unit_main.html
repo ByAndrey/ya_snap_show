@@ -50,6 +50,9 @@
                     <a class="nav-link {{ 'active' if type == 'events' else '' }}" href="unit?id={{ data['_id'] }}&type=events">Events</a>
                   </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ 'active' if type == 'audit' else '' }}" href="unit?id={{ data['_id'] }}&type=audit">Audit</a>
+                  </li>  
+                <li class="nav-item">
                   <a class="nav-link {{ 'active' if type == 'firmware' else '' }}" href="unit?id={{ data['_id'] }}&type=firmware">Firmware</a>
                 </li>
             </ul>
