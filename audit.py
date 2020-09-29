@@ -7,8 +7,8 @@ def out_line_parser(file,cmd):
          values = {}
          while data!='\n':
             split_data = data.rstrip().split(':')
-            name=split_data[0]
-            value=split_data[1]
+            name=split_data[0].strip()
+            value=split_data[1].strip()
             values.update({name:value})
             data=next(file)
          block.append(values)
