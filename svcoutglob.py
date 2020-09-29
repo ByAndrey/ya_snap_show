@@ -124,7 +124,6 @@ def svc_out_glob(infile):
    svc_info_glob.update({'lseventlog': out_dot_parser(file, 'svcinfo lseventlog  -delim :')})
    if not svc_info_glob['lseventlog']:
      svc_info_glob.update({'lseventlog': out_space_events_parser(file, 'svcinfo lseventlog -alert')})
-     #print("lseventlog: %s"%svc_info_glob['lseventlog'])
    svc_info_glob.update({'lssystem': out_line_parser(file, 'svcinfo lssystem')})
    svc_info_glob.update({'lsupdate': out_line_parser(file, 'svcinfo lsupdate')})
    svc_info_glob.update({'lsencryption': out_line_parser(file, 'svcinfo lsencryption')})
