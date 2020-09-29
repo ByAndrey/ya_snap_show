@@ -14,20 +14,17 @@
         <div class="col-md-1 text-center">
             <h6>Cluster User</h6>
         </div>
-        <div class="col-md-5 text-center">
+        <div class="col-md-7 text-center">
             <h6>Action Cmd</h6>
         </div>
         <div class="col-md-1 text-center">
             <h6>Result Code</h6>
         </div>
-        <div class="col-md-2 text-center">
-            <h6>Result Obj ID</h6>
-        </div>
     </div>
     </nav>
 
 {% for event in data['audit']|reverse %}
-        {{ data['audit'] }}
+        
         <div class="row" style="color:{% if event['status']=='alert' %} red {% elif event['status']=='config' %} blue {% elif event['status']=='expired' %} grey {% else %} black  {% endif %};" >
             <div class="col-md-1 text-center">
                 {{ event['Sequence Num'] }}
@@ -38,14 +35,11 @@
             <div class="col-md-1 text-center">
                 {{ event['Cluster User'] }}
             </div>
-            <div class="col-md-5 text-center">
+            <div class="col-md-7 text-center">
                 {{ event['Action Cmd'] }}
             </div>
             <div class="col-md-1 text-center">
                 {{ event['Result Code'] }}
-            </div>
-            <div class="col-md-2 text-left">
-                {{ event['Result Obj ID']}}
             </div>
         </div>
     {% endfor %}

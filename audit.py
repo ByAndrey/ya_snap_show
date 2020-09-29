@@ -17,6 +17,6 @@ def out_line_parser(file,cmd):
 def audit(infile):
     file = open(infile,'+r')
     audit_log = {}
-    audit_log.update({'audit': out_line_parser(file, 'Auditlog Entry')})
+    audit_log = out_line_parser(file, 'Auditlog Entry')
     file.close()
     return audit_log
