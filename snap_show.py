@@ -22,8 +22,12 @@ def drive_info(system_id,drive_id):
          drive_info.update({'mdisk_id' : drive['mdisk_id']})
          drive_info.update({'slot_id' : drive['slot_id']})
          drive_info.update({'drive_status' : drive['status']})
-         drive_info.update({'drive_type' : drive['transport_protocol']})
-         drive_info.update({'drive_capacity' : drive['physical_capacity']})
+         if 'transport_protocol' in drive:
+            drive_info.update({'drive_type' : drive['transport_protocol']})
+         if 'physical_capacity' in drive:
+            drive_info.update({'drive_capacity' : drive['physical_capacity']})
+         elif 'capacity' in drive:
+            drive_info.update({'drive_capacity' : drive['capacity']}) 
          drive_info.update({'drive_fru' : drive['FRU_part_number']})
          drive_info.update({'drive_prodid' : drive['product_id']})
          drive_info.update({'drive_vendorid' : drive['vendor_id']})
