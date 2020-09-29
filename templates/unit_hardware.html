@@ -53,7 +53,7 @@
                     {% for drive in data['svcout_int']['lsdrive_delim'] %}
                     {% if (drive['enclosure_id'] == enclosure['id'] and drive['FRU_part_number'] not in drive_fru) %}
                         <div class="row">
-                        <div class="col-md-1">{{ drive['FRU_part_number'] }}</div><div class="col-md-1">{{ drive['physical_capacity'] }}</div><div class="col-md-1"> {{ drive['transport_protocol']}}</div>
+                        <div class="col-md-1">{{ drive['FRU_part_number'] }}</div><div class="col-md-1">{% if 'physical_capacity' in drive %} {{ drive['physical_capacity'] }} {% elif 'capacity' in drive %}{{ drive['capacity']}}{% endif %}</div><div class="col-md-1"> {{ drive['transport_protocol']}}</div>
                         {% set _= drive_fru.append(drive['FRU_part_number']) %}
                         </div>
                     {% endif %}
