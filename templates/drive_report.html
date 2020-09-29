@@ -46,6 +46,7 @@
                 {{ drive['drive_capacity'] }}
             </div>
         </div>
+        {% if drive['drive_type'] is defined %}
         <div class="row">
             <div class="col text-right">
                 Drive type :
@@ -54,6 +55,7 @@
                 {{ drive['drive_type'] }}
             </div>
         </div>
+        {% endif %}
         <div class="row">
             <div class="col text-right">
                 Drive FRU # :
