@@ -67,7 +67,10 @@ def get_unit_data(id):
 
 @app.route("/", methods=['GET','POST'])
 def home_page():
-   data = systems_list()
+   if request.args.get('mtm'):
+      mtm = request.args.get('mtm')
+      sn = request.args.get('sn')
+   data = systems_list(mtm,sn)
    return render_template("snap_show_main.html",data = data)
 
 @app.route("/main", methods=['GET','POST'])
