@@ -29,6 +29,8 @@ def drive_info(system_id,drive_id):
          elif 'capacity' in drive:
             drive_info.update({'drive_capacity' : drive['capacity']}) 
          drive_info.update({'drive_fru' : drive['FRU_part_number']})
+         if 'FRU_identity' in drive: 
+            drive_info.update({'drive_identity': drive['FRU_identity']})
          drive_info.update({'drive_prodid' : drive['product_id']})
          drive_info.update({'drive_vendorid' : drive['vendor_id']})
 
