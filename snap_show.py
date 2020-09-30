@@ -49,9 +49,12 @@ def drive_info(system_id,drive_id):
          drive_info.update({'mdisk_groupid' : mdisk['mdisk_grp_id']})
    return(drive_info)
 
-def systems_list():
+def systems_list(mtm,sn):
    data = []
-   x = db.test.find().sort('timestamp',-1).limit(20)
+   if mtm and sn:
+      x = db.test.find({'mtm':mtm,'sn':sn}).sort('timestamp',-1).limit(20)
+   else:
+      x = db.test.find().sort('timestamp',-1).limit(20)
    for item in x:
       print("%s - %s - %s"%(item['mtm'],item['sn'],item['timestamp']))
       data.append([item['_id'],item['mtm'],item['sn'],item['timestamp'],item['saout']['lsservicestatus'][0]['node_code_version']])
