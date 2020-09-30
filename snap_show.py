@@ -51,7 +51,7 @@ def drive_info(system_id,drive_id):
 
 def systems_list():
    data = []
-   x = db.test.find().sort('timestamp',-1).limit(12)
+   x = db.test.find().sort('timestamp',-1).limit(20)
    for item in x:
       print("%s - %s - %s"%(item['mtm'],item['sn'],item['timestamp']))
       data.append([item['_id'],item['mtm'],item['sn'],item['timestamp'],item['saout']['lsservicestatus'][0]['node_code_version']])
