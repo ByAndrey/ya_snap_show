@@ -49,9 +49,16 @@ def drive_info(system_id,drive_id):
          drive_info.update({'mdisk_groupid' : mdisk['mdisk_grp_id']})
    return(drive_info)
 
-def systems_list():
+def systems_list(mtm,sn):
    data = []
-   x = db.test.find().sort('timestamp',-1).limit(12)
+   if mtm and sn:
+      x = db.test.find({'mtm':{'$regex':mtm},'sn':{'$regex':sn}}).sort('timestamp',-1).limit(20)
+   elif mtm and not sn:
+      x = db.test.find({'mtm':{'$regex':mtm}}).sort('timestamp',-1).limit(20)
+   elif not mtm and sn:
+      x = db.test.find({'sn':{'$regex':sn}}).sort('timestamp',-1).limit(20)
+   else:
+      x = db.test.find().sort('timestamp',-1).limit(20)
    for item in x:
       print("%s - %s - %s"%(item['mtm'],item['sn'],item['timestamp']))
       data.append([item['_id'],item['mtm'],item['sn'],item['timestamp'],item['saout']['lsservicestatus'][0]['node_code_version']])
@@ -64,13 +71,25 @@ def get_unit_data(id):
 
 @app.route("/", methods=['GET','POST'])
 def home_page():
-   data = systems_list()
-   return render_template("snap_show_main.html",data = data)
+   if request.args.get('mtm'):
+      mtm = request.args.get('mtm')
+   else: mtm = ''
+   if request.args.get('sn'):
+      sn = request.args.get('sn')
+   else: sn = ''
+   data = systems_list(mtm,sn)
+   return render_template("snap_show_main.html", mtm=mtm, sn=sn,data = data)
 
 @app.route("/main", methods=['GET','POST'])
 def main_page():
-   data = systems_list()
-   return render_template("snap_show_main.html",data = data)
+   if request.args.get('mtm'):
+      mtm = request.args.get('mtm')
+   else: mtm = ''
+   if request.args.get('sn'):
+      sn = request.args.get('sn')
+   else: sn = ''
+   data = systems_list(mtm,sn)
+   return render_template("snap_show_main.html", mtm=mtm, sn=sn, data = data)
 
 @app.route("/unit", methods=['GET','POST'])
 def unit_page():
