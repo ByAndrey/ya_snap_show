@@ -8,7 +8,7 @@
             <div class="row">
             <div class="col-md-1">id : {{ enclosure['id']}}</div>
             <div class="col-md-3">Enc_type : {{ enclosure['product_MTM'] }}({{ enclosure['type'] }})<br> Sn : {{ enclosure['serial_number'] }}</div>
-            <div class="col-md-2{% if enclosure['status']=='offline' %} text-danger {% endif %}">Status : {{ enclosure['status'] }}</div>
+            <div class="col-md-2 {% if enclosure['status']=='offline' %} text-danger {% else %} text-success {% endif %} ">Status : {{ enclosure['status'] }}</div>
             <div class="col-md-2">Temperature : {{ enclosure['ambient_temperature'] }}</div> 
             </div>
             <div class ="row">
@@ -21,7 +21,7 @@
                         <tr>
                             <td colspan=2 width="240" align="center" bgcolor="#DDDDDD">{{ node['name'] }}</td>
                         </tr><tr>
-                            <td width="120" align="center" {% if node['status']=='service' %} class="bg-alert" {% endif %}>{{ node['status'] }}</td>
+                            <td width="120" align="center" {% if node['status']=='service' %} class="bg-warning" {% elif node['status']=='offline' %} class="bg-danger" {% else %} class="bg-success" {% endif %}>{{ node['status'] }}</td>
                             <td width="120" align="center">{{ node['service_IP_address'] }}</td>
                         </tr>
                     </table>
