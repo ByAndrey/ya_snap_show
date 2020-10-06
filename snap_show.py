@@ -22,6 +22,8 @@ def drive_info(system_id,drive_id):
          drive_info.update({'mdisk_id' : drive['mdisk_id']})
          drive_info.update({'slot_id' : drive['slot_id']})
          drive_info.update({'drive_status' : drive['status']})
+         if 'use' in drive:
+            drive_info.update({'drive_use' : drive['use']})
          if 'transport_protocol' in drive:
             drive_info.update({'drive_type' : drive['transport_protocol']})
          if 'physical_capacity' in drive:
