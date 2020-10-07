@@ -4,15 +4,24 @@
 {% block info %}
 
     {% for enclosure in data['svcout_int']['lsenclosure_delim'] %}
-        <div class="bd-lead">
-            <div class="row">
-            <div class="col-md-1">id : {{ enclosure['id']}}</div>
-            <div class="col-md-3">Enc_type : {{ enclosure['product_MTM'] }}({{ enclosure['type'] }})<br> Sn : {{ enclosure['serial_number'] }}</div>
-            <div class="col-md-2 {% if enclosure['status']=='offline' %} text-danger {% else %} text-success {% endif %} ">Status : {{ enclosure['status'] }}</div>
-            <div class="col-md-2">Temperature : {{ enclosure['ambient_temperature'] }}</div> 
-            </div>
-            <div class ="row">
-                <div class="col-8">
+        <table align="center">
+            
+            <tr>
+                <td>
+                    id : {{ enclosure['id']}}
+                </td>
+                <td>
+                    Enc_type : {{ enclosure['product_MTM'] }}({{ enclosure['type'] }})<br> Sn : {{ enclosure['serial_number'] }}
+                </td>
+                <td {% if enclosure['status']=='offline' %} class="text-danger" {% else %} class="text-success" {% endif %}>
+                    Status : {{ enclosure['status'] }}
+                </td>
+                <td>
+                    Temperature : {{ enclosure['ambient_temperature'] }}
+                </td>
+            </tr>
+            
+            <tr><td colspan="4">
                 <table align=center><tr>
                 {% for node in data['svcout_glob']['lsnode_delim'] %}
                 {% if node['enclosure_id'] == enclosure['id'] %}
@@ -29,9 +38,9 @@
                 {% endif %}
                 {% endfor %}
                 </tr></table>
-                </div>
-            </div>
-            <div class="container-fluid">
+            </td></tr>
+            
+            <tr><td colspan="4">
                 <table border=1><tr>
                 {% for slot in data['svcout_int']['lsenclosureslot_delim'] %}
                     {% if slot['enclosure_id'] == enclosure['id'] %}
@@ -42,19 +51,20 @@
                 <tr>
                 {% for slot in data['svcout_int']['lsenclosureslot_delim'] %}
                     {% if slot['enclosure_id'] == enclosure['id'] %}
-                        <td width='30' align='center' bgcolor="{% if slot['powered']=='no' %}grey{% elif slot['fault_LED'] == 'off' %}green{% else %}red{% endif %}"><a href="drive_info?id={{ data['_id'] }}&drive_id={{ slot['drive_id'] }}" target="popup" style="color: midnightblue;">{{ slot['drive_id'] }}</a></td>
+                        <td width='30' align='center' {% if slot['powered']=='no' %} class="bg-secondary"{% elif slot['fault_LED'] == 'off' %} class="bg-success"{% else %}class="bg-danger"{% endif %}><a href="drive_info?id={{ data['_id'] }}&drive_id={{ slot['drive_id'] }}" target="popup" style="color: midnightblue;">{{ slot['drive_id'] }}</a></td>
                     {% endif %}
                 {% endfor %}
                 </tr></table>
-            </div>
-            <div class="row">
-                <div class='col-md-2 text-center'>
+            </td></tr>
+            
+            <tr>
+                <td>
                     Nodes : {{ enclosure['online_canisters'] }}/{{ enclosure['total_canisters'] }}
-                </div>
-                <div class="col-md-3 text-center">
+                </td>
+                <td>
                     PSUs : {{ enclosure['online_PSUs'] }}/{{ enclosure['total_PSUs'] }}
-                </div>
-                <div class="col-md-2 text-center">
+                </td>
+                <td>
                             {% set battery_online = namespace(value=0) %}
                             {% set battery_total = namespace(value=0) %}
                             {% for battery in data['svcout_int']['lsenclosurebattery_delim'] %}
@@ -64,22 +74,24 @@
                             {% endif %}
                             {% endfor %}
                     Battery : {{ battery_online.value }}/{{ battery_total.value }}
-                </div>
-            </div>
-            <div class="container-fluid">
+                </td>
+            </td></tr>
+            <tr><td colspan="4">
+            
                     Drive types :<br>
-                    <div class="container-fluid">
+                    <table>
                     {% set drive_fru=[] %}
                     {% for drive in data['svcout_int']['lsdrive_delim'] %}
                     {% if (drive['enclosure_id'] == enclosure['id'] and drive['FRU_part_number'] not in drive_fru) %}
-                        <div class="row">
-                        <div class="col-md-1">{{ drive['FRU_part_number'] }}</div><div class="col-md-1">{% if 'physical_capacity' in drive %} {{ drive['physical_capacity'] }} {% elif 'capacity' in drive %}{{ drive['capacity']}}{% endif %}</div><div class="col-md-1"> {{ drive['transport_protocol']}}</div>
+                        <tr>
+                        <td width="120">{{ drive['FRU_part_number'] }}</td><td width="120">{% if 'physical_capacity' in drive %} {{ drive['physical_capacity'] }} {% elif 'capacity' in drive %}{{ drive['capacity']}}{% endif %}</td><td width="120"> {{ drive['transport_protocol']}}</td>
                         {% set _= drive_fru.append(drive['FRU_part_number']) %}
-                        </div>
+                        </tr>
                     {% endif %}
                     {% endfor %}
-                    </div>
-            </div>
-        </div><br>
+                    </table>
+            </td></tr>
+    </table>
+        <br>
     {% endfor %}
 {% endblock %}
