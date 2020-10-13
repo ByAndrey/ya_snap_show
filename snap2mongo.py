@@ -15,8 +15,8 @@ dirs = filter(os.path.isdir, os.listdir())
 print('------')
 global_snap_collector = {}
 client = MongoClient()
-db = client.test
-post = db.test
+db = client.snapdb
+post = db.snapdb
 for dir in dirs:
     files = os.listdir("%s/dumps"%dir)
     pdf_data_pac = {}
@@ -40,7 +40,7 @@ for dir in dirs:
     else:
       audit_log = ''
     print('Getting data from %s - %s - %s'%(saout_data['lsservicestatus'][0]['product_mtm'],saout_data['lsservicestatus'][0]['product_serial'],datetime.datetime.strptime(dir[-13:], "%y%m%d.%H%M%S")))
-    already_exist = db.test.find({"mtm":saout_data['lsservicestatus'][0]['product_mtm'],"sn":saout_data['lsservicestatus'][0]['product_serial'],"timestamp":dir[-13:]})
+    already_exist = db.snapdb.find({"mtm":saout_data['lsservicestatus'][0]['product_mtm'],"sn":saout_data['lsservicestatus'][0]['product_serial'],"timestamp":dir[-13:]})
     if (already_exist.count()==0):
       post_id = post.insert_one({"mtm":saout_data['lsservicestatus'][0]['product_mtm'],"sn":saout_data['lsservicestatus'][0]['product_serial'],"timestamp":dir[-13:],"saout":saout_data,"svcout_int":svc_info_int,"svcout_glob":svc_info_glob,"audit":audit_log}).inserted_id
       print(post_id)
