@@ -1,16 +1,20 @@
 #!/usr/bin/python3
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 import operator
-import os
+import os, subprocess
+from loguru import logger
+
+logger.add("snap_show.log", rotation="1 MB")
+context_logger = logger.info("Application started.")
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.environ['SNAP_DIR']
 
 client = MongoClient()
-db = client.test
+db = client.snapdb
 
 def drive_info(system_id,drive_id):
    data = get_unit_data(system_id)
@@ -51,25 +55,26 @@ def drive_info(system_id,drive_id):
          drive_info.update({'mdisk_distributed' : mdisk['distributed']})
          drive_info.update({'mdisk_raidtype' : mdisk['raid_level']})
          drive_info.update({'mdisk_groupid' : mdisk['mdisk_grp_id']})
+   context_logger=logger.info("{}",drive_info)
    return(drive_info)
 
 def systems_list(mtm,sn):
    data = []
    if mtm and sn:
-      x = db.test.find({'mtm':{'$regex':mtm},'sn':{'$regex':sn}}).sort('timestamp',-1).limit(20)
+      x = db.snapdb.find({'mtm':{'$regex':mtm},'sn':{'$regex':sn}}).sort('timestamp',-1).limit(20)
    elif mtm and not sn:
-      x = db.test.find({'mtm':{'$regex':mtm}}).sort('timestamp',-1).limit(20)
+      x = db.snapdb.find({'mtm':{'$regex':mtm}}).sort('timestamp',-1).limit(20)
    elif not mtm and sn:
-      x = db.test.find({'sn':{'$regex':sn}}).sort('timestamp',-1).limit(20)
+      x = db.snapdb.find({'sn':{'$regex':sn}}).sort('timestamp',-1).limit(20)
    else:
-      x = db.test.find().sort('timestamp',-1).limit(20)
+      x = db.snapdb.find().sort('timestamp',-1).limit(20)
    for item in x:
       print("%s - %s - %s"%(item['mtm'],item['sn'],item['timestamp']))
       data.append([item['_id'],item['mtm'],item['sn'],item['timestamp'],item['saout']['lsservicestatus'][0]['node_code_version']])
    return(data)
 
 def get_unit_data(id):
-   item = db.test.find({"_id":ObjectId(id)})
+   item = db.snapdb.find({"_id":ObjectId(id)})
    return (item[0])
 
 
@@ -117,8 +122,12 @@ def upload_page():
    if request.method == 'POST':
         file = request.files['file']
         if file:
+            context_logger = logger.info("Upload file {}", file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-            return render_template("snap_uploaded.html", filename = file.filename)
+            context_logger = logger.debug("{}",subprocess.call("python3 snap_unpack.py", shell=True ))
+            context_logger = logger.debug("{}",subprocess.call("python3 snap2mongo.py", shell=True ))
+            res = make_response(jsonify({'message': 'File %s uploaded and extracted'%file.filename}), 200)
+            return res
    else:
       return render_template("snap_show_upload.html")
 
@@ -131,4 +140,4 @@ def drive_rep_page():
       return main_page()
 
 if __name__ == "__main__":
-   app.run(host="0.0.0.0")
+   app.run(host="0.0.0.0",debug=True)

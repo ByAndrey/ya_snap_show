@@ -82,7 +82,7 @@ function upload(url) {
   data.append("file", file);
 
   // request progress handler
-  request.upload.addEventListener("progress", function (e) {
+  request.upload.addEventListener("progress", function(e) {
 
     // Get the loaded amount and total filesize (bytes)
     var loaded = e.loaded;
@@ -94,6 +94,7 @@ function upload(url) {
     // Update the progress text and progress bar
     progress.setAttribute("style", `width: ${Math.floor(percent_complete)}%`);
     progress_status.innerText = `${Math.floor(percent_complete)}% uploaded`;
+    //if (percent_complete == 100) { setTimeout(() => { window.location.href='/main' ; }, 3000)}
 
   })
 
