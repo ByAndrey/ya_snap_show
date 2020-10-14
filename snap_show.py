@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 import operator
@@ -126,7 +126,8 @@ def upload_page():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
             context_logger = logger.debug("{}",subprocess.call("python3 snap_unpack.py", shell=True ))
             context_logger = logger.debug("{}",subprocess.call("python3 snap2mongo.py", shell=True ))
-            return render_template("snap_uploaded.html", filename = file.filename)
+            res = make_response(jsonify({'message': 'File %s uploaded and extracted'%file.filename}), 200)
+            return res
    else:
       return render_template("snap_show_upload.html")
 
