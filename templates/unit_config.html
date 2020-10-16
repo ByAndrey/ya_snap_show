@@ -7,7 +7,7 @@
 
         <h4>Mdisk group:</h4>
         {% for mdiskgrp in data['svcout_glob']['lsmdiskgrp'] %}
-        <div class="container-fluid">
+        <div class="container-fluid border border-primary">
             <div class="row" style="background-color: darkgoldenrod;">
                 <div class="col-md-1 text-center">
                     Id
@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="row" style="background-color: rgb(175, 160, 123);">
+            <div class="row">
                 <div class="col-md-1 text-center">
                     {{ mdiskgrp['id'] }}
                 </div>
@@ -55,11 +55,11 @@
                     {{ mdiskgrp['free_capacity']}}
                 </div>
             </div>
-        <div class="container-fluid">
-            <div class="row">
-            <div class="col-md">Mdisk :</div>
+        <div class="container-fluid border border-primary">
+            <div class="row ">
+            <div class="col-md" style="background-color: rgb(154, 181, 231);">Mdisk :</div>
             </div>
-            <div class="row" style="background-color: rgb(154, 181, 231);">
+            <div class="row" style="background-color: rgb(154, 181, 231);" >
                 <div class="col-md-1 text-center">
                     Id
                 </div>
@@ -105,9 +105,9 @@
         {% endfor %}
         </div>
 
-        <div class="container-fluid">
+        <div class="container-fluid border border-primary">
             <div class="row">
-            <div class="col-md">Vdisk :</div>
+            <div class="col-md" style="background-color: rgb(141, 228, 180);">Vdisk :</div>
             </div>
             <div class="row" style="background-color: rgb(141, 228, 180);">
                 <div class="col-md-1 text-center">
