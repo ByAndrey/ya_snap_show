@@ -27,7 +27,6 @@
     </nav>
 
     {% for event in data['svcout_glob']['lseventlog']|reverse %}
-        {% if event['fixed']=='no' %}
         <div class="row" style="color:{% if event['status']=='alert' %} red {% elif event['status']=='config' %} blue {% elif event['status']=='expired' %} grey {% else %} black  {% endif %};" >
             <div class="col-md-1 text-center">
                 {{ event['event_id'] }}
@@ -48,7 +47,6 @@
                 {{ event['error_code']}} {{ event['description'] }}
             </div>
         </div>
-        {% endif %}
     {% endfor %}
 
 </div>
